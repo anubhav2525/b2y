@@ -38,7 +38,7 @@ interface LinkProps {
 const AppSidebar: React.FC<AppSidebarProps> = ({userRole, ...props}: AppSidebarProps) => {
     const pathname = usePathname();
 
-    const companyLinks = [
+    const companyLinks: NavLinkProps[] = [
         {
             title: "Overview",
             url: "#",
@@ -67,7 +67,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({userRole, ...props}: AppSidebarP
         },
     ]
 
-    const hrLinks = [
+    const hrLinks: NavLinkProps[] = [
         {
             title: "Overview",
             url: "#",

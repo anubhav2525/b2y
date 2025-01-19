@@ -94,6 +94,8 @@ const VacancyViewPage = () => {
 
     const [showCandidates, setShowCandidates] = useState(false)
     const [selectedDocument, setSelectedDocument] = useState<{ url: string; type: 'resume' | 'coverLetter' } | null>(null)
+    console.log(selectedDocument);
+
     return (
         <div className="max-w-5xl mx-auto p-6">
             <div className="flex items-center justify-between gap-4 ">
@@ -294,7 +296,7 @@ const VacancyViewPage = () => {
                                             </DialogTrigger>
                                             <DialogContent className="max-w-4xl max-h-[80vh]">
                                                 <DialogHeader>
-                                                    <DialogTitle>{candidate.name}'s Resume</DialogTitle>
+                                                    <DialogTitle>{candidate.name}&apos;s Resume</DialogTitle>
                                                 </DialogHeader>
                                                 <iframe src={candidate.resumeUrl} className="w-full h-[70vh]" />
                                             </DialogContent>
@@ -309,7 +311,7 @@ const VacancyViewPage = () => {
                                             </DialogTrigger>
                                             <DialogContent className="max-w-4xl max-h-[80vh]">
                                                 <DialogHeader>
-                                                    <DialogTitle>{candidate.name}'s Cover Letter</DialogTitle>
+                                                    <DialogTitle>{candidate.name}&apos;s Cover Letter</DialogTitle>
                                                 </DialogHeader>
                                                 <iframe src={candidate.coverLetterUrl} className="w-full h-[70vh]" />
                                             </DialogContent>

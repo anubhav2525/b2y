@@ -1,7 +1,6 @@
 'use client'
 import {useForm} from 'react-hook-form'
 import {zodResolver} from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
@@ -9,58 +8,28 @@ import {Textarea} from "@/components/ui/textarea"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import {Switch} from "@/components/ui/switch"
 import ArrayInput from '@/components/ui/ArrayInput'
-import ExperienceInput from '@/components/ui/ExperienceInput'
-import ShiftDetailsInput from '@/components/ui/ShiftDetailsInput'
-import React from "react";
-
-const formSchema = z.object({
-    title: z.string().min(2, {message: "Title must be at least 2 characters."}),
-    description: z.string().min(10, {message: "Description must be at least 10 characters."}),
-    jobHighlight: z.string().min(5, {message: "Job highlight must be at least 5 characters."}),
-    department: z.string().min(2, {message: "Department must be at least 2 characters."}),
-    employmentType: z.enum(["Full-Time", "Part-Time", "Internship", "Contract"]),
-    location: z.string().min(2, {message: "Location must be at least 2 characters."}),
-    salaryRange: z.object({
-        min: z.number().min(0),
-        max: z.number().min(0),
-    }).optional(),
-    requiredSkills: z.array(z.string()),
-    experience: z.array(z.object({
-        name: z.string(),
-        value: z.string(),
-    })).optional(),
-    role: z.string().min(2, {message: "Role must be at least 2 characters."}),
-    responsibilities: z.array(z.string()),
-    educationRequirements: z.array(z.string()).optional(),
-    languagePreferences: z.array(z.string()).optional(),
-    vacanciesCount: z.number().min(1),
-    perksAndBenefits: z.array(z.string()).optional(),
-    applicationDeadline: z.date().optional(),
-    status: z.enum(["Open", "Closed", "On-Hold"]),
-    jobType: z.enum(["Permanent", "Temporary", "Contractual", "Internship"]),
-    shiftDetails: z.object({
-        type: z.enum(["Day", "Night", "Rotational"]),
-        startTime: z.string().optional(),
-        endTime: z.string().optional()
-    }).optional(),
-    travelRequirements: z.boolean().optional(),
-    additionalNotes: z.string().optional()
-})
+import React, {useState} from "react";
+import {VacancyFormData, vacancyFormData} from "@/types/vacancy";
+import {X} from "lucide-react";
 
 const VacancyAddForm = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const [expName, setExpName] = useState('');
+    const [expValue, setExpValue] = useState('');
+
+
+    const form = useForm<VacancyFormData>({
+        resolver: zodResolver(vacancyFormData),
         defaultValues: {
-            employmentType: "Full-Time",
+            employmentType: "Full Time",
             status: "Open",
-            jobType: "Permanent",
             vacanciesCount: 1,
             requiredSkills: [],
             responsibilities: [],
+            experience: []
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: VacancyFormData) {
         console.log(values)
     }
 
@@ -88,6 +57,7 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+
                     <div>
                         <FormField
                             control={form.control}
@@ -120,6 +90,7 @@ const VacancyAddForm = () => {
                         )}
                     />
                 </div>
+
                 <div>
                     <FormField
                         control={form.control}
@@ -135,6 +106,7 @@ const VacancyAddForm = () => {
                         )}
                     />
                 </div>
+
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <FormField
@@ -161,6 +133,7 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+
                     <div>
                         <FormField
                             control={form.control}
@@ -177,6 +150,7 @@ const VacancyAddForm = () => {
                         />
                     </div>
                 </div>
+
                 <div>
                     <FormField
                         control={form.control}
@@ -192,6 +166,7 @@ const VacancyAddForm = () => {
                         )}
                     />
                 </div>
+
                 <div className="w-full grid  grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <FormField
@@ -209,6 +184,7 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+
                     <div>
                         <FormField
                             control={form.control}
@@ -235,9 +211,70 @@ const VacancyAddForm = () => {
                         placeholder="Enter a required skill"
                     />
                 </div>
+
                 <div>
-                    <ExperienceInput control={form.control}/>
+                    <FormField
+                        control={form.control}
+                        name="experience"
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Experience</FormLabel>
+                                <div className="space-y-2">
+                                    {field.value?.map((exp: { name: string; value: string }, index: number) => (
+                                        <div key={index} className="flex items-center gap-2">
+                                            <span className="flex-grow">{exp.name}: {exp.value}</span>
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => {
+                                                    const newValue = [...field.value ?? []]
+                                                    newValue.splice(index, 1)
+                                                    field.onChange(newValue)
+                                                }}
+                                            >
+                                                <X className="h-4 w-4"/>
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex gap-2">
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Experience name"
+                                            value={expName}
+                                            onChange={(e) => setExpName(e.target.value)}
+                                        />
+                                    </FormControl>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Values"
+                                            value={expValue}
+                                            onChange={(e) => setExpValue(e.target.value)}
+                                        />
+                                    </FormControl>
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            if (expName.trim() && expValue.trim()) {
+                                                field.onChange([...field.value || [], {
+                                                    name: expName.trim(),
+                                                    value: expValue.trim()
+                                                }])
+                                                setExpName('')
+                                                setExpValue('')
+                                            }
+                                        }}
+                                    >
+                                        Add
+                                    </Button>
+                                </div>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
                 </div>
+
                 <div>
                     <ArrayInput
                         control={form.control}
@@ -246,6 +283,7 @@ const VacancyAddForm = () => {
                         placeholder="Enter a responsibility"
                     />
                 </div>
+
                 <div>
                     <ArrayInput
                         control={form.control}
@@ -254,13 +292,17 @@ const VacancyAddForm = () => {
                         placeholder="Enter an education requirement"
                     />
                 </div>
+
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><ArrayInput
-                        control={form.control}
-                        name="languagePreferences"
-                        label="Language Preferences"
-                        placeholder="Enter a language preference"
-                    /></div>
+                    <div>
+                        <ArrayInput
+                            control={form.control}
+                            name="languagePreferences"
+                            label="Language Preferences"
+                            placeholder="Enter a language preference"
+                        />
+                    </div>
+
                     <div>
                         <FormField
                             control={form.control}
@@ -287,7 +329,8 @@ const VacancyAddForm = () => {
                         placeholder="Enter a perk or benefit"
                     />
                 </div>
-                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <FormField
                             control={form.control}
@@ -308,6 +351,7 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+
                     <div>
                         <FormField
                             control={form.control}
@@ -332,24 +376,28 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+
+                </div>
+
+
+                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <FormField
                             control={form.control}
-                            name="jobType"
+                            name="shiftDetails.type"
                             render={({field}) => (
                                 <FormItem>
-                                    <FormLabel>Job Type</FormLabel>
+                                    <FormLabel>Shift Type</FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Select job type"/>
+                                                <SelectValue placeholder="Select shift type"/>
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            <SelectItem value="Permanent">Permanent</SelectItem>
-                                            <SelectItem value="Temporary">Temporary</SelectItem>
-                                            <SelectItem value="Contractual">Contractual</SelectItem>
-                                            <SelectItem value="Internship">Internship</SelectItem>
+                                            <SelectItem value="Day">Day</SelectItem>
+                                            <SelectItem value="Night">Night</SelectItem>
+                                            <SelectItem value="Rotational">Rotational</SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <FormMessage/>
@@ -357,11 +405,38 @@ const VacancyAddForm = () => {
                             )}
                         />
                     </div>
+                    <div>
+                        <FormField
+                            control={form.control}
+                            name="shiftDetails.startTime"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Start Time</FormLabel>
+                                    <FormControl>
+                                        <Input type="time" {...field} />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div>
+                        <FormField
+                            control={form.control}
+                            name="shiftDetails.endTime"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>End Time</FormLabel>
+                                    <FormControl>
+                                        <Input type="time" {...field} />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
                 </div>
 
-                <div className="w-full">
-                    <ShiftDetailsInput control={form.control}/>
-                </div>
 
                 <div>
                     <FormField
@@ -401,6 +476,7 @@ const VacancyAddForm = () => {
                         )}
                     />
                 </div>
+
                 <div>
                     <Button type="submit">Submit</Button>
                 </div>

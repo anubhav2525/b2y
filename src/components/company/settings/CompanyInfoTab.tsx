@@ -1,5 +1,4 @@
 "use client"
-
 import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
 import {Separator} from "@/components/ui/separator"
@@ -18,6 +17,7 @@ import {Textarea} from "@/components/ui/textarea"
 import {MoveRight, Eye} from 'lucide-react'
 import React, {useCallback, useState} from "react"
 import * as z from "zod"
+import Image from "next/image";
 
 const MAX_FILE_SIZE = 5000000 // 5MB
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png"]
@@ -74,21 +74,6 @@ const CompanyInfoTab = () => {
             for (const [key, value] of formData.entries()) {
                 console.log(key, value)
             }
-
-            // Replace with your actual API endpoint
-            // const response = await fetch('/api/company-info', {
-            //     method: 'POST',
-            //     body: formData,
-            // })
-            //
-            // if (response.ok) {
-            //     toast({
-            //         title: "Form submitted successfully",
-            //         description: "Your company information has been updated.",
-            //     })
-            // } else {
-            //     throw new Error('Failed to submit form')
-            // }
         } catch (error) {
             console.error('Error submitting form:', error)
             toast({
@@ -114,7 +99,7 @@ const CompanyInfoTab = () => {
         <FormField
             control={form.control}
             name={name}
-            render={({field: {onChange, value, ...rest}}) => (
+            render={({field: {onChange,...rest}}) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
@@ -124,8 +109,8 @@ const CompanyInfoTab = () => {
                                 className="flex flex-col items-center justify-center w-full h-40 border-2 border-gray-300 hover:border-gray-400 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-950 dark:bg-gray-900 hover:bg-gray-100 transition-all duration-300 dark:border-gray-600 dark:hover:border-gray-800"
                             >
                                 {preview ? (
-                                    <img src={preview || "/placeholder.svg"} alt={`${label} preview`}
-                                         className="w-full h-full object-cover rounded-lg"/>
+                                    <Image src={preview || "/placeholder.svg"} alt={`${label} preview`}
+                                         className="w-full h-full object-cover rounded-lg" height={500} width={500} />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <svg
@@ -149,7 +134,7 @@ const CompanyInfoTab = () => {
                                         <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG up to 5MB</p>
                                     </div>
                                 )}
-                                <Input
+                                <input
                                     id={`${name}-upload`}
                                     type="file"
                                     className="hidden"
@@ -162,6 +147,7 @@ const CompanyInfoTab = () => {
                                         }
                                     }}
                                     {...rest}
+                                    value={undefined}
                                 />
                             </label>
                             {preview && (
@@ -185,8 +171,7 @@ const CompanyInfoTab = () => {
                     </FormControl>
                     <FormMessage/>
                 </FormItem>
-            )}
-        />
+            )}></FormField>
     )
 
     return (

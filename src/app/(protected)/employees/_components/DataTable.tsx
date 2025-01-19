@@ -323,7 +323,7 @@ const DataTable = () => {
                     </Table>
                 </div>
                 {/* pagination form */}
-                <div className="flex items-center justify-between space-x-2 py-4">
+                <div className="flex items-center justify-between space-x-2 py-3">
                     <div className="flex-1 text-sm text-muted-foreground">
                         Showing {table.getRowModel().rows.length} of{" "}
                         {table.getFilteredRowModel().rows.length} records

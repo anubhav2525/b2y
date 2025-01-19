@@ -1,32 +1,32 @@
-"use client";
-import {useState} from 'react'
-import {Control} from 'react-hook-form'
-import {FormField, FormItem, FormLabel, FormControl, FormMessage} from "@/components/ui/form"
-import {Input} from "@/components/ui/input"
-import {Button} from "@/components/ui/button"
-import {X} from 'lucide-react'
+"use client"
+import { useState } from 'react'
+import { Control, FieldValues, Path } from 'react-hook-form'
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { X } from 'lucide-react'
 
-interface ArrayInputProps {
-    control: Control<any>
-    name: string
+interface ArrayInputProps<T extends FieldValues> {
+    control: Control<T>
+    name: Path<T>
     label: string
     placeholder: string
 }
 
-const ArrayInput = ({control, name, label, placeholder}: ArrayInputProps) => {
+const ArrayInput = <T extends FieldValues>({ control, name, label, placeholder }: ArrayInputProps<T>) => {
     const [inputValue, setInputValue] = useState('')
 
     return (
         <FormField
             control={control}
             name={name}
-            render={({field}) => (
+            render={({ field }) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <div className="flex flex-wrap gap-2">
-                        {field.value?.map((item: string, index: number) => (
+                        {(field.value as string[])?.map((item: string, index: number) => (
                             <div key={index}
-                                 className="flex text-wrap  items-center bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm">
+                                 className="flex text-wrap items-center bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm">
                                 {item}
                                 <Button
                                     type="button"
@@ -72,3 +72,4 @@ const ArrayInput = ({control, name, label, placeholder}: ArrayInputProps) => {
 }
 
 export default ArrayInput
+

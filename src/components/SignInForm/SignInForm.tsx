@@ -41,8 +41,7 @@ const FormSchema = z.object({
         }),
 });
 
-
-const SigninForm = () => {
+const SignInForm = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -52,6 +51,7 @@ const SigninForm = () => {
     });
 
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
+       console.log(data);
         toast({
             title: "You submitted the following values:",
             description: "",
@@ -180,4 +180,4 @@ const SigninForm = () => {
         </div>
     )
 }
-export default SigninForm
+export default SignInForm;
