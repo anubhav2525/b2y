@@ -84,12 +84,12 @@ const CompanySocialTab = () => {
                                 return (
                                     <div key={field.id}>
                                         <div className="w-full grid grid-cols-1 md:grid-cols-12 gap-3">
-                                            <div className="w-full grid md:col-span-2">
+                                            <div className="w-full grid md:col-span-2 items-center">
                                                 <FormField
                                                     control={form.control}
                                                     name={`links.${index}.platform`}
                                                     render={({field}) => (
-                                                        <FormItem className="md:w-[180px] w-full">
+                                                        <FormItem className=" w-full">
                                                             <Select
                                                                 onValueChange={field.onChange}
                                                                 defaultValue={field.value}
@@ -116,7 +116,7 @@ const CompanySocialTab = () => {
                                                 />
                                             </div>
                                             <div className="w-full grid md:col-span-10">
-                                                <div className="w-full flex items-center gap-3">
+                                                <div className="w-full flex items-center gap-2">
                                                     <div className="w-full">
                                                         <FormField
                                                             control={form.control}
@@ -134,7 +134,7 @@ const CompanySocialTab = () => {
                                                             )}
                                                         />
                                                     </div>
-                                                    <div className="flex items-center gap-1.5">
+                                                    <div className="flex items-center gap-2">
                                                         <div>
                                                             <Button
                                                                 type="button"
@@ -149,7 +149,7 @@ const CompanySocialTab = () => {
                                                         <div>
                                                             <Button
                                                                 type="button"
-                                                                variant="ghost"
+                                                                variant="outline"
                                                                 size="icon"
                                                                 onClick={() => remove(index)}
                                                                 className="h-10 w-10"

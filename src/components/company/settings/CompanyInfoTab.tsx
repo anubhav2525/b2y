@@ -45,6 +45,7 @@ export const companyInfoSchema = z.object({
         .string()
         .min(10, {message: "About section must be at least 10 characters."})
         .max(500, {message: "About section must not exceed 500 characters."}),
+    registrationNumber: z.string().min(10, "").max(10, "")
 })
 
 export type CompanyInfoFormValues = z.infer<typeof companyInfoSchema>
@@ -58,6 +59,7 @@ const CompanyInfoTab = () => {
         defaultValues: {
             companyName: "",
             about: "",
+            registrationNumber: "",
         },
     })
 
@@ -67,6 +69,7 @@ const CompanyInfoTab = () => {
         formData.append('banner', data.banner)
         formData.append('companyName', data.companyName)
         formData.append('about', data.about)
+        formData.append('registrationNumber', data.registrationNumber)
 
         try {
             // Log the form data
@@ -99,7 +102,7 @@ const CompanyInfoTab = () => {
         <FormField
             control={form.control}
             name={name}
-            render={({field: {onChange,...rest}}) => (
+            render={({field: {onChange, ...rest}}) => (
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <FormControl>
@@ -110,7 +113,7 @@ const CompanyInfoTab = () => {
                             >
                                 {preview ? (
                                     <Image src={preview || "/placeholder.svg"} alt={`${label} preview`}
-                                         className="w-full h-full object-cover rounded-lg" height={500} width={500} />
+                                           className="w-full h-full object-cover rounded-lg" height={500} width={500}/>
                                 ) : (
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <svg
@@ -200,6 +203,21 @@ const CompanyInfoTab = () => {
                                         <FormLabel>Company name</FormLabel>
                                         <FormControl>
                                             <Input placeholder="e.g. Infosys, Wipro" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div>
+                            <FormField
+                                control={form.control}
+                                name="registrationNumber"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Registration number</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="gsjdfs" {...field} />
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>
